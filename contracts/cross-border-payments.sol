@@ -15,7 +15,7 @@ contract CrossBorderPayment {
     event PaymentCreated(address indexed sender, address indexed recipient, uint256 amount);
     event PaymentCompleted(address indexed sender, address indexed recipient, uint256 amount);
     event PaymentCancelled(address indexed sender, address indexed recipient, uint256 amount);
-    event CheckBalance(string text, uint amount);
+    event CheckBalance(uint amount);
 
     //Uncomment the constructor and feed necessary arguments in scripts/deploy.ts, to deploy the contract.
 
@@ -54,11 +54,10 @@ contract CrossBorderPayment {
     }
     
     function getBalance(address user_account) external returns (uint){
-    
-       string memory data = "User Balance is : ";
-       uint user_bal = user_account.balance;
-       emit CheckBalance(data, user_bal );
-       return (user_bal);
+        require(user_account != address(0), "Invalid recipient address");
+        uint user_bal = user_account.balance;
+        emit CheckBalance(user_bal);
+        return (user_bal);
 
     }
 }
